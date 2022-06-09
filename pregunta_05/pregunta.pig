@@ -12,3 +12,8 @@ $ pig -x local -f pregunta.pig
 
         >>> Escriba su respuesta a partir de este punto <<<
 */
+lines = LOAD 'data.tsv' AS (col1:chararray, col2:BAG{A:tuple(a1:chararray)}, col3:chararray);
+try = FOREACH lines GENERATE FLATTEN(col2.a1) as word;
+grouped = GROUP try BY word;
+wordcount = FOREACH grouped GENERATE group, COUNT(try);
+STORE wordcount INTO 'output' USING PigStorage(',');
