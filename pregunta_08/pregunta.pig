@@ -21,5 +21,6 @@ lines = LOAD 'data.tsv' AS (col1:chararray, col2:BAG{A:tuple(a1:chararray)}, col
 try = FOREACH lines GENERATE FLATTEN(col2) AS D1, FLATTEN(col3) AS D2;
 wod2= FOREACH try GENERATE(D1,D2) AS G1;
 grouped = GROUP wod2 BY G1;
-wordcount = FOREACH grouped GENERATE group, count(wod2);
-STORE wordcount INTO 'output' USING PigStorage(',');
+wordcount = FOREACH grouped GENERATE group, count(wod2) as L3;
+wod1 = FOREACH wordcount GENERATE (group.$0, group.$1),L3;
+STORE word1 INTO 'output' USING PigStorage(',');
