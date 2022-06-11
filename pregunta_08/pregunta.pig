@@ -23,4 +23,4 @@ wod2= FOREACH try GENERATE(D1,D2) AS G1;
 grouped = GROUP wod2 BY G1;
 wordcount = FOREACH grouped GENERATE group, count(wod2) as L3;
 wod1 = FOREACH wordcount GENERATE (group.$0, group.$1),L3;
-STORE word1 INTO 'output' USING PigStorage(',');
+STORE wod1 INTO 'output' USING PigStorage(',');
