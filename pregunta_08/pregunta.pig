@@ -19,8 +19,7 @@ $ pig -x local -f pregunta.pig
 
 lines = LOAD 'data.tsv' AS (col1:chararray, col2:BAG{A:tuple(a1:chararray)}, col3:map[]);
 try = FOREACH lines GENERATE FLATTEN(col2) AS D1, FLATTEN(col3) AS D2;
-wod2= FOREACH try GENERATE(D1,D2) AS G1;
-grouped = GROUP wod2 BY G1;
-wordcount = FOREACH grouped GENERATE group, count(wod2) as L3;
-wod1 = FOREACH wordcount GENERATE (group.$0, group.$1),L3;
-STORE wod1 INTO 'output' USING PigStorage(',');
+wod1= FOREACH try GENERATE(D1,D2) AS G1;
+grouped = GROUP wod1 BY G1;
+wordcount = FOREACH grouped GENERATE group, COUNT(wod1);
+STORE wordcount INTO 'output' USING PigStorage(',');
