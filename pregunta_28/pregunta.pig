@@ -26,5 +26,5 @@ $ pig -x local -f pregunta.pig
 lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray ,color:chararray,numb:INT);
 fechas = FOREACH lines GENERATE date as fec;
 todate_data= FOREACH fechas GENERATE ToDate(fec,'yyyy-MM-dd') as (date_time: DateTime);
-c = FOREACH todate_data GENERATE GetYear(date_time) as dateStr1, ToString(date_time, 'yy') as (dateStr2:chararray);
-DUMP c;
+c = FOREACH todate_data GENERATE ToString(date_time, 'yy') as (dateStr2:chararray) , GetYear(date_time) as dateStr1 ;
+STORE c INTO 'output' USING PigStorage(',');
