@@ -14,3 +14,10 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray ,color:chararray,numb:INT);
+fechas = FOREACH lines GENERATE date as fec;
+todate_data= FOREACH fechas GENERATE ToDate(fec,'yyyy-MM-dd') as (date_time: DateTime);
+c = FOREACH todate_data GENERATE ToString(date_time, 'yyyy') as fecnac;
+grouped = GROUP c BY fecnac;
+wordcount= FOREACH grouped GENERATE group, COUNT(c);
+STORE wordcount INTO 'output' USING PigStorage(',');
