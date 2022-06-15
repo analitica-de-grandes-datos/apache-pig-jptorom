@@ -19,6 +19,7 @@ $ pig -x local -f pregunta.pig
         >>> Escriba su respuesta a partir de este punto <<<
 */
 
-lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, U>colum = FOREACH lines GENERATE  REGEX_EXTRACT(date,'(.*)-(.*)-(.*)',2) AS D1;
+lines = LOAD 'data.csv' USING PigStorage(',') AS (ColId:INT, UserName:chararray, UserLastName:chararray, date:chararray,color:chararray,numb:INT);
+colum = FOREACH lines GENERATE  REGEX_EXTRACT(date,'(.*)-(.*)-(.*)',2) AS D1;
 filtered = FILTER colum BY D1 is not null;
 STORE filtered INTO 'output' USING PigStorage(',');
